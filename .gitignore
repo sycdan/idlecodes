@@ -127,3 +127,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# poetry
+poetry.lock
+requirements.txt
+
+# local django database
+db.sqlite3
