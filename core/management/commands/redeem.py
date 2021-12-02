@@ -22,10 +22,17 @@ BASE_PARAMS = dict(
 )
 CHEST_TYPES = {
   2: "Gold",
+  22: "Gold Zorbu",
   37: "Gold Supply",
   282: "Electrum",
   335: "Gold D'Hani",
   339: "Gold Widdle",
+}
+HERO = {
+  22: "Zorbu",
+}
+SKINS = {
+  131: "Icewind Dale / Steampunk Zorbu",
 }
 
 
@@ -109,7 +116,11 @@ class Command(BaseCommand):
       ))
       res = api.call('redeemcoupon', params)
       if res['success']:
-        message = get_message(res)
+        try:
+          message = get_message(res)
+        except Exception as e:
+          message = json.dumps(res)
+          message['__error'] = str(e)
         Redemption.objects.create(
           promotion=promotion,
           platform=platform,
@@ -143,12 +154,17 @@ def get_message(response):
   """
   if response['okay'] and 'loot_details' in response:
     parts = []
-    for x in response['loot_details']:
-      item = x.get('loot_item', None)
-      if item == 'generic_chest':
-        chest_name = CHEST_TYPES.get(x['chest_type_id'])
+    for details in response['loot_details']:
+      action = details.get('loot_action', None)
+      item = details.get('loot_item', None)
+      if action == 'generic_chest' and item == 'generic_chest':
+        chest_name = CHEST_TYPES.get(details['chest_type_id'])
         if chest_name:
-          parts.append(f"{chest_name} Chest x{x['count']}")
+          parts.append(f"{chest_name} Chest x{details['count']}")
+      elif action == 'unlock_hero' and item == 'unlock_hero':
+        parts.append(HERO[details['hero_id']])
+      elif action == 'claim' and 'unlock_hero_skin' in details:
+        parts.append(SKINS[details['unlock_hero_skin']])
     if parts:
       return ', '.join(parts)
   elif not response['okay']:
