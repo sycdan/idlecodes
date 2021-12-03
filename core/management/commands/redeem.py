@@ -32,7 +32,7 @@ HERO = {
   22: "Zorbu",
 }
 SKINS = {
-  131: "Icewind Dale / Steampunk Zorbu",
+  131: "Icewind Dale",
 }
 
 
