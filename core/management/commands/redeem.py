@@ -30,6 +30,7 @@ CHEST_TYPES = {
 }
 HERO = {
   22: "Zorbu",
+  65: "Omin",
 }
 SKINS = {
   131: "Icewind Dale",
