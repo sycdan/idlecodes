@@ -30,6 +30,7 @@ CHEST_TYPES = {
 }
 HERO = {
   22: "Zorbu",
+  34: "Donaar",
   65: "Omin",
 }
 SKINS = {
