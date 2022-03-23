@@ -12,7 +12,7 @@ from core.models import Platform, Promotion, Redemption
 
 logger = logging.getLogger(__name__)
 
-API_URL = "http://ps7.idlechampions.com/~idledragons/"
+API_URL = "http://ps7.idlechampions.com/~idledragons"
 BASE_PARAMS = dict(
   language_id=1,
   timestamp=0,
@@ -258,7 +258,11 @@ def get_message(response):
       elif action == 'unlock_hero' and item == 'unlock_hero':
         parts.append(HERO[str(details['hero_id'])])
       elif action == 'claim' and 'unlock_hero_skin' in details:
-        parts.append(SKINS[details['unlock_hero_skin']])
+        skin_id = details['unlock_hero_skin']
+        if skin_id in SKINS:
+          parts.append(SKINS[skin_id])
+        else:
+          parts.append(str(skin_id))
     if parts:
       return ', '.join(parts)
   elif not response['okay']:
