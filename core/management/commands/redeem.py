@@ -23,10 +23,14 @@ BASE_PARAMS = dict(
 CHEST_TYPES = {
   2: "Gold",
   22: "Gold Zorbu",
+  30: "Gold Nrakk",
   37: "Gold Supply",
+  263: "Gold Orkira",
   282: "Electrum",
   335: "Gold D'Hani",
   339: "Gold Widdle",
+  352: "Silver Gazrick",
+  353: "Gold Gazrick",
 }
 HERO = {
   "1": "Bruenor",
@@ -188,6 +192,22 @@ class Command(BaseCommand):
     logging.basicConfig(level=logging.DEBUG)
     platform = Platform.objects.get(key=options['platform'])
     api = Api(platform)
+
+
+    # # buy event chests
+    # for x in range(35):
+    #   params = {}
+    #   params.update(dict(
+    #     user_id=platform.user_id,
+    #     hash=platform.hash,
+    #     instance_id=platform.instance_id,
+    #     chest_type_id=30,
+    #     count=1,
+    #   ))
+    #   print(api.call('buysoftcurrencychest', params))
+    #   time.sleep(1)
+    # return
+
     for promo in get_latest_promotions():
       code = promo.code
       print(code)
